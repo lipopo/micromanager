@@ -1,0 +1,14 @@
+# flask system
+flask
+flask-admin
+flask-login
+
+# password
+bcrypt
+
+# sql or nosql orm and cace system
+pymongo
+redis
+
+# dashboard
+dash

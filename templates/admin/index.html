@@ -1,0 +1,121 @@
+{% extends 'admin/ex_master.html' %}
+
+{% block head_css %}
+{{ super() }}
+<style>
+    body {
+		background: #fbfbfb;
+	}
+</style>
+{% endblock %}
+
+{% block title %}
+MicroBlog
+{% endblock %}
+
+{% block body %}
+    <div class="container-fluid">
+		<div class="row mb-3">
+		   <div class="col-3">
+		       <div class="shadow bg-white p-3 rounded-pill">
+			       Pill
+			   </div>
+		   </div>
+		   <div class="col-3">
+		       <div class="shadow bg-white p-3 rounded-pill">
+			       Pill
+			   </div>
+		   </div>
+		   <div class="col-3">
+		       <div class="shadow bg-white p-3 rounded-pill">
+			       Pill
+			   </div>
+		   </div>
+		   <div class="col-3">
+		       <div class="shadow bg-white p-3 rounded-pill">
+			       Pill
+			   </div>
+		   </div>
+		</div>
+		<div class="row mb-3">
+			<div class="col p-3">
+			    <h5 class="text-dark">
+				    Main Section
+				</h5>
+			</div>
+		</div>
+
+		<div class="row mb-3 align-items-stretch">
+		    <div class="col-7">
+			    <div class="bg-white card shadow rounded-lg h-100">
+				    <div class="card-body"> Hello 1</div>
+				</div>
+			</div>
+			<div class="col-5">
+			    <div class="row mb-1">
+				    <div class="col">
+					    <div class="bg-white card shadow rounded-lg">
+						    <div class="card">
+								<div class="card-body">Body</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="row">
+				    <div class="col">
+						<div class="bg-white card shadow rounded-lg">
+							<div class="card-body">Body</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="row mb-3">
+		    <div class="col p-3">
+			    <h5 class="text-dark">
+					Second Section
+				</h5>
+			</div>
+		</div>
+
+		<div class="row mb-3 align-items-stretch">
+			<div class="col-5">
+				<div class="bg-white card shadow rounded-lg">
+					<div class="card-body">Body</div>
+				</div>
+			</div>
+			<div class="col-7">
+				<div class="bg-white card shadow rounded-lg">
+					<div class="card-body">Body</div>
+				</div>
+			</div>
+		</div>
+		<div class="row mb-3">
+		    <div class="col p-3">
+			    <h5 class="text-dark">
+					Third Section
+				</h5>
+			</div>
+		</div>
+
+		<div class="row mb-3">
+			<div class="col">
+				<div class="bg-white card shadow rounded-lg">
+					<div class="card-body">Body</div>
+				</div>
+			</div>
+		</div>
+
+	</div>
+{% endblock %}
+
+{% block tail %}
+<script>
+    var titleProvider = function() {
+	    return new Date().getSeconds();
+    }
+</script>
+
+{{ super() }}
+{% endblock %}
