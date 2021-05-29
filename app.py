@@ -12,7 +12,7 @@ from flask_login import LoginManager, UserMixin, login_user, current_user, logou
 from redis import Redis
 
 from exceptions import LoginRequiredException
-from views import ArticleView
+from views import UserView
 
 
 cwd = os.getcwd()
@@ -27,32 +27,55 @@ app.config["title"] = "MicroManager"
 conn = pymongo.MongoClient()
 db = conn.test
 
-# login module
 
+"""
+Login Block
+
+主要构建用户以及陌生用户等。
+"""
 
 class User(UserMixin):
+    """
+    User 用户对象
+    用于flask-login全局注册
+    """
 
-    def __init__(self, name=None, **kwargs):
+    def __init__(
+        self,
+        name=None,
+        uid=None,
+        hpwd=None,
+        is_admin=None,
+        ctime=None,
+        utime=None,
+        **kwargs
+    ):
         self.name = name
+        self.uid = uid
+        self._is_admin = is_admin
 
     @property
     def is_authenicated(self):
-        return self.name is not None
+        return self.uid is not None
 
     @property
     def is_active(self):
-        return self.name is not None
+        return self.uid is not None
 
     @property
     def is_anonymous(self):
-        return self.name is None
+        return self.uid is None
+
+    @property
+    def is_admin(self):
+        return self._is_admin
 
     def get_id(self):
-        return self.name or None
+        return self.uid or None
 
     @classmethod
     def get(cls, user_id):
-        user = db.user.find_one({"name": user_id})
+        user = db.user.find_one({"uid": user_id})
 
         if user is None:
             return cls()
@@ -62,6 +85,9 @@ class User(UserMixin):
 
 @login_manager.user_loader
 def load_user(user_id):
+    """
+    加载用户
+    """
     return User.get(user_id)
 
 
@@ -101,8 +127,17 @@ def logout():
 
 app.add_url_rule("/login/", view_func=LoginView.as_view("login"))
 
-# admin module
 
+"""
+Admin Block
+
+管理系统模块
+
+主要涵盖：
+    - 数据库管理
+    - 文件夹管理
+    - Redis管理等
+"""
 admin = Admin(
      app,
      name="MicroManager",
@@ -112,23 +147,28 @@ admin = Admin(
          name="主页",
          menu_icon_type=ICON_TYPE_GLYPH,
          menu_icon_value="bi-house"
-    )
-)
-admin.add_view(ArticleView(
-    db.article, "文章管理",
-    menu_icon_type=ICON_TYPE_GLYPH,
-    menu_icon_value="bi-journal-richtext"
 ))
+
 admin.add_view(FileAdmin(
     os.path.join(cwd, "files"),
     name="文件管理",
     menu_icon_type=ICON_TYPE_GLYPH,
     menu_icon_value="bi-files"
 ))
+
+admin.add_view(
+    UserView(
+        db.user,
+        "用户管理",
+        menu_icon_type=ICON_TYPE_GLYPH,
+        menu_icon_value="bi-people"
+))
+
 admin.add_view(rediscli.RedisCli(
     Redis(),
     "Redis管理"
 ))
+
 
 
 # check login
